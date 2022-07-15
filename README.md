@@ -14,6 +14,7 @@ PPNet has the following dependencies:
      - numpy
      - scipy
      - statsmodels
+     - kneed
 
 
 - **Install with the source codes**

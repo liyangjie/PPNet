@@ -4,7 +4,7 @@
 import os
 import shutil
 import argparse
-
+from kneed import KneeLocator
 parser = argparse.ArgumentParser()
 parser.add_argument('input_genomes', help='[Required] The path of input sequences')
 
@@ -65,6 +65,60 @@ def main():
     ANC_file.readline()
     ANC_matrix = [line.split('\t')[1:] for line in ANC_file]
     ANC_file.close()
+    
+    #寻找ANI和ANC的阈值
+    ani_threshold_range = [1 - x / 10000 for x in range(21)] #[1-0.9980]
+    
+    #测试ANI阈值
+    cluster_dic_nr_sizes=[]
+    for ani_Threshold in ani_threshold_range:
+        cluster_dic = []
+        for row in range(len(ori_Strain_list)):
+            Strain_A = ori_Strain_list[row]
+            N50_A = N50_info[Strain_A]
+            clust = [Strain_A]
+            # for col in range(row+1,len(ori_Strain_list)): #取上三角
+            for col in range(row):  # 取下三角
+                Strain_B = ori_Strain_list[col]
+                N50_B = N50_info[Strain_B]
+                ANI = float(ANI_matrix[row][col])
+                ANC1 = abs(1 - float(ANC_matrix[row][col]))
+                ANC2 = abs(1 - float(ANC_matrix[col][row]))
+                if ANI >= ani_Threshold:
+                    clust.append(Strain_B)
+            cluster_dic.append(clust)
+        cluster_dic_nr = iter_clean(cluster_dic)
+        cluster_dic_nr_size= len(cluster_dic_nr)
+        cluster_dic_nr_sizes.append(cluster_dic_nr_size)
+    knee_ani = KneeLocator(range(21),cluster_dic_nr_sizes,S=1,curve='convex',direction='decreasing',online=True).knee
+    ani_Threshold = ani_threshold_range[knee_ani]
+    #测试ANC阈值
+    anc_threshold_range = [x/1000 for x in range(31)]
+    cluster_dic_nr_sizes=[]
+    for anc_Threshold in anc_threshold_range:
+        cluster_dic = []
+        for row in range(len(ori_Strain_list)):
+            Strain_A = ori_Strain_list[row]
+            N50_A = N50_info[Strain_A]
+            clust = [Strain_A]
+            # for col in range(row+1,len(ori_Strain_list)): #取上三角
+            for col in range(row):  # 取下三角
+                Strain_B = ori_Strain_list[col]
+                N50_B = N50_info[Strain_B]
+                ANI = float(ANI_matrix[row][col])
+                ANC1 = abs(1 - float(ANC_matrix[row][col]))
+                ANC2 = abs(1 - float(ANC_matrix[col][row]))
+                if ANI >= ani_Threshold and ANC1 < anc_Threshold and ANC2 < anc_Threshold:
+                    clust.append(Strain_B)
+            cluster_dic.append(clust)
+        cluster_dic_nr = iter_clean(cluster_dic)
+        cluster_dic_nr_size= len(cluster_dic_nr)
+        cluster_dic_nr_sizes.append(cluster_dic_nr_size)
+    knee_anc = KneeLocator(range(31),cluster_dic_nr_sizes,S=1,curve='convex',direction='decreasing',online=True).knee
+    anc_Threshold = anc_threshold_range[knee_anc]
+
+
+
     cluster_dic = []
     for row in range(len(ori_Strain_list)):
         Strain_A = ori_Strain_list[row]
@@ -77,7 +131,7 @@ def main():
             ANI = float(ANI_matrix[row][col])
             ANC1 = abs(1 - float(ANC_matrix[row][col]))
             ANC2 = abs(1 - float(ANC_matrix[col][row]))
-            if ANI >= 0.9997 and ANC1 < 0.01 and ANC2 < 0.01:
+            if ANI >= ani_Threshold and ANC1 < anc_Threshold and ANC2 < anc_Threshold:
                 clust.append(Strain_B)
         cluster_dic.append(clust)
     cluster_dic_nr = iter_clean(cluster_dic)

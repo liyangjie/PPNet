@@ -15,6 +15,7 @@ PPNet has the following dependencies:
      - scipy
      - statsmodels
      - kneed
+     - pyani
 
 
 - **Install with the source codes**
@@ -34,7 +35,7 @@ PPNet has the following dependencies:
     ```
   - Install the Python dependencies:
     ```bash
-    pip install biopython pyvis numpy scipy statsmodels 
+    pip install biopython pyvis numpy scipy statsmodels pyani
     ```
   - Install the external dependances either from source or from your packaging system:
     ```bash

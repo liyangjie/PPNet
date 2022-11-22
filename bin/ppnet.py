@@ -1,4 +1,4 @@
-#!/beegfs/home/lyj/miniconda3/bin/python
+#!/usr/bin/env python
 # -*- coding=utf-8 -*-
 # @Author: Yangjie Li
 import os
@@ -12,6 +12,10 @@ parser.add_argument('-x','--extend',default ='fasta',help='The suffix of genomes
 parser.add_argument('-c','--cpus',help = 'number of CPUs to use', type=int, default=1)
 parser.add_argument('-a', '--Algorithm', help='[Required] Select the algorithm for calculating the correlation coefficient[1-81], or set 0 to use all algorithm.' )
 parser.add_argument('-pt','--percentage_threshold',default=1,help='What percentage of interactions will be visualized (Default "1")')
+parser.add_argument('-t1','--ANI_threshold',default = 'auto',
+					help='The threshold of ANI  [0-0.9999], or set as "auto"  to select the inflection point as the threshold for ANI. (Default "auto")')
+parser.add_argument('-t2','--ANC_threshold',default = 'auto',
+					help='The threshold of |1-ANC| [0-0.9999], or set as "auto" to select the inflection point as the threshold for |1-ANC|. (Default "auto")')
 
 args = parser.parse_args()
 

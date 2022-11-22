@@ -79,7 +79,7 @@ The genome file should be in fasta format and placed in the same path. The group
  
 ## License
 
-BtToxin_Digger is free software under a GPLv3 license.
+PPNet is free software under a GPLv3 license.
 
 
     

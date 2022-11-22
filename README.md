@@ -55,6 +55,8 @@ Options:
       [-c] number of CPUs to use
       [-a] [Required] Select the algorithm for calculating the correlation coefficient [1-81], or set 0 to use all algorithm.
       [-pt] What percentage of interactions will be visualized (Default "1")
+      [-t1] The threshold of ANI [0-0.9999], or set as "auto"  to select the inflection point as the threshold for ANI. (Default "auto")
+      [-t2] The threshold of |1-ANC| [0-0.999], or set as "auto" to select the inflection point as the threshold for |1-ANC|. (Default "auto")
 ```
 ## Algorithm
 See Algorithm.docx

@@ -19,7 +19,7 @@ outdir = args.output_dir #outputdir
 net = Network(height='100%', width='100%')
 #got_net.barnes_hut()
 got_data = pd.read_csv(input_file)
-got_data =got_data.sort_values(by='Attribute',ascending= False) #order
+got_data =got_data.sort_values(by='Attribute',ascending= True) #order
 
 size = len(got_data)
 got_data = got_data[0:size//100]

@@ -37,10 +37,8 @@ PPNet has the following dependencies:
     ```bash
     pip install biopython pyvis numpy scipy statsmodels pyani
     ```
-  - Install the external dependances either from source or from your packaging system:
-    ```bash
-    prokka roary
-    ```
+  - You must install Prokka and Roary independently.
+
 ## Usage
 ``` bash
 ppnet [Options]

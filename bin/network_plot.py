@@ -9,20 +9,25 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('Network_file',help='[Required] The path of input sequences')
 parser.add_argument('-o','--output_dir',default='./',help='The path of output (Default "./")')
-parser.add_argument('-pt','--percentage_threshold',default=1,help='What percentage of interactions will be visualized (Default "1")')
+parser.add_argument('-pt','--percentage_threshold',type=int,default=1,help='What percentage of interactions will be visualized (Default "1")')
 
 
 args = parser.parse_args()
 input_file = args.Network_file
 outdir = args.output_dir #outputdir
+p_threshold = args.percentage_threshold
 
 net = Network(height='100%', width='100%')
 #got_net.barnes_hut()
 got_data = pd.read_csv(input_file)
-got_data =got_data.sort_values(by='Attribute',ascending= True) #order
+got_data =got_data.sort_values(by='Attribute',ascending= False) #order
 
 size = len(got_data)
-got_data = got_data[0:size//100]
+
+slice_percent = size // 100
+slice_percent= slice_percent * p_threshold
+
+got_data = got_data[0:slice_percent]
 
 sources = got_data['GeneA']
 targets = got_data['GeneB']
